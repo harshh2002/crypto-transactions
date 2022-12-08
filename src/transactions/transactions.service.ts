@@ -4,7 +4,6 @@ import { HttpService } from '@nestjs/axios';
 import { map, catchError, toArray } from 'rxjs';
 import { Model } from 'mongoose';
 import { Transactions } from './transactions.interface';
-import { response } from 'express';
 
 @Injectable()
 export class TransactionsService {
