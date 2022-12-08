@@ -15,7 +15,7 @@ export class TransactionsService {
   ) {}
 
   async getTransactions(address: string) {
-    const response = this.httpService
+    const response = await this.httpService
       .get('https://api.etherscan.io/api', {
         params: {
           module: 'account',
@@ -29,23 +29,23 @@ export class TransactionsService {
           apikey: this.configService.get<string>('etherscan_api_key'),
         },
       })
-      .pipe(map((res) => res.data.result))
       .pipe(
-        catchError(() => {
-          throw new ForbiddenException('API not available');
-        }),
-      );
-    const data = await response
-      .pipe(
+        map((res) => res.data.result),
         map((obj) => ({
           ...obj,
         })),
         toArray(),
       )
+      .pipe(
+        catchError(() => {
+          throw new ForbiddenException('API not available');
+        }),
+      )
       .toPromise();
+
     const transaction = new this.transactionsModel({
       address,
-      response: data,
+      response: response,
     });
 
     await transaction.save();
