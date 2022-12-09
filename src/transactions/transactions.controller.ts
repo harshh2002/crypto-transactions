@@ -9,4 +9,9 @@ export class TransactionsController {
   async getTransactions(@Param('userAddress') userAddress: string) {
     return await this.transactionsService.getTransactions(userAddress);
   }
+
+  @Get('balance/:userAddress')
+  async getBalance(@Param('userAddress') userAddress: string) {
+    return await this.transactionsService.getBalance(userAddress);
+  }
 }
